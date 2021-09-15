@@ -7,6 +7,34 @@ from get_assets import get_assets
 from get_candles import get_candles
 from process_strategies import process_strategies
 
+from buy.melhorde3 import melhorde3
+from buy.mhi import mhi
+from buy.mhi2 import mhi2
+from buy.mhi2high import mhi2high
+from buy.mhi3 import mhi3
+from buy.mhi3high import mhi3high
+from buy.mhihigh import mhihigh
+from buy.milhao import milhao
+from buy.milhaolow import milhaolow
+from buy.padrao23 import padrao23
+from buy.torresgemeas import torresgemeas
+from buy.tresmosqueteiros import tresmosqueteiros
+
+buys = {
+  'melhorde3': melhorde3,
+  'mhi': mhi,
+  'mhi2': mhi2,
+  'mhi2high': mhi2high,
+  'mhi3': mhi3,
+  'mhi3high': mhi3high,
+  'mhihigh': mhihigh,
+  'milhao': milhao,
+  'milhaolow': milhaolow,
+  'padrao23': padrao23,
+  'torresgemeas': torresgemeas,
+  'tresmosqueteiros': tresmosqueteiros,
+}
+
 Iq = IQ_Option(user['username'], user['password'])
 check, reason = Iq.connect()
 
@@ -18,6 +46,8 @@ else:
 
   sys.exit()
 
+Iq.change_balance('PRACTICE')
+
 period = 1
 
 assets = get_assets(Iq, 'digital')
@@ -28,4 +58,9 @@ strategies = process_strategies(candles, period)
 
 strategies.reverse()
 
-print(strategies[0])
+strategy = strategies[0]
+print(strategy)
+
+buy = buys[strategy['strategy']]
+
+buy(Iq, strategy['asset'])
