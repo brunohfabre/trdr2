@@ -48,19 +48,50 @@ else:
 
 Iq.change_balance('PRACTICE')
 
+profit = 0
+gain = round(Iq.get_balance() * 0.05)
 period = 1
+loss = 0
 
-assets = get_assets(Iq, 'digital')
+def stop_win():
+  global profit
+  global gain
 
-candles = get_candles(Iq, assets, period)
+  if(profit >= gain):
+    print('Stop Win Batido!')
 
-strategies = process_strategies(candles, period)
+    sys.exit()
 
-strategies.reverse()
+def run():
+  global profit
+  global gain
+  global period
+  global loss
 
-strategy = strategies[0]
-print(strategy)
+  print('inicio')
+  assets = get_assets(Iq, 'digital')
 
-buy = buys[strategy['strategy']]
+  candles = get_candles(Iq, assets, period)
 
-buy(Iq, strategy['asset'])
+  strategies = process_strategies(candles, period)
+
+  strategies.reverse()
+
+  strategy = strategies[0]
+  print(strategy)
+
+  buy = buys[strategy['strategy']]
+
+  result, money = buy(Iq, strategy['asset'], loss)
+
+  if result == 'win':
+    profit = profit + money
+    loss = 0
+
+  else:
+    loss = money
+
+  stop_win()
+
+while True:
+  run()

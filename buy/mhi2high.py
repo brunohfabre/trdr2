@@ -1,18 +1,18 @@
-import sys
 from datetime import datetime
 from time import time, sleep
 
-def mhi2high(Iq, asset):
+from helpers.martingale import martingale
+
+def mhi2high(Iq, asset, initial_entry):
   balance = Iq.get_balance()
   entry_value_base = round(balance * 0.01)
   entry_value = entry_value_base
+  loss = 0
+
+  if initial_entry != 0:
+    entry_value = martingale(Iq, asset, initial_entry)
 
   print(f"Aguardando oportunidade de entrada. {asset} MHI 2 maioria")
-
-  def martingale(entry_value):
-    payout = round(int(Iq.get_digital_payout(asset)) / 100, 2)
-
-    entry_value = (entry_value + (entry_value * payout)) / payout
 
   while True:
     minutes = float(((datetime.now()).strftime('%M.%S'))[1:])
@@ -50,19 +50,22 @@ def mhi2high(Iq, asset):
             if check_close:
               if float(win_money) > 0:
                 win_money=("%.2f" % (win_money))
-                print("you win", win_money, "money")
+                print("you win", win_money - loss, "money")
 
-                sys.exit()
+                return ('win', float(win_money - loss))
 
               else:
                 print("you loose\n")
 
-                martingale(entry_value)
+                loss = entry_value
+                entry_value = martingale(Iq, asset, entry_value)
 
                 break
         
         else:
           print('Error entry')
+
+          return ('loss', loss)
       
       else:
         sleep(3)
