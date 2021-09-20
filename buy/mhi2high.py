@@ -45,14 +45,16 @@ def mhi2high(Iq, asset, initial_entry):
 
         if buy_status:
           while True:
-            check_close, win_money= Iq.check_win_digital_v2(id)
+            check_close, win_money = Iq.check_win_digital_v2(id)
 
             if check_close:
               if float(win_money) > 0:
-                win_money=("%.2f" % (win_money))
-                print("you win", win_money - loss, "money")
+                win_money = round(float(win_money), 2)
+                value = win_money - loss
+                
+                print("you win", value, "money")
 
-                return ('win', float(win_money - loss))
+                return ('win', value)
 
               else:
                 print("you loose\n")

@@ -50,7 +50,7 @@ Iq.change_balance('PRACTICE')
 
 profit = 0
 gain = round(Iq.get_balance() * 0.05)
-period = 1
+period = 2
 loss = 0
 
 def stop_win():
@@ -68,7 +68,7 @@ def run():
   global period
   global loss
 
-  print('inicio')
+  print(profit, loss)
   assets = get_assets(Iq, 'digital')
 
   candles = get_candles(Iq, assets, period)
