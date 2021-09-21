@@ -59,7 +59,7 @@ def mhi2high(Iq, asset, initial_entry):
               else:
                 print("you loose\n")
 
-                loss = entry_value
+                loss += entry_value
                 entry_value = martingale(Iq, asset, entry_value)
 
                 break
