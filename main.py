@@ -92,6 +92,7 @@ def run():
     loss = money
 
   stop_win()
+  return
 
 while True:
   run()
