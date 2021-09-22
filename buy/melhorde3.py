@@ -17,7 +17,7 @@ def melhorde3(Iq, asset, initial_entry):
   while True:
     minutes = float(((datetime.now()).strftime('%M.%S'))[1:])
 
-    if True if (minutes >= 3.58 and minutes <= 4) or (minutes >= 8.58 and minutes <= 9) else False:
+    if True if (minutes >= 3.59 and minutes <= 4) or (minutes >= 8.59 and minutes <= 9) else False:
       dir = False
       candles = Iq.get_candles(asset, 60, 8, time())
 
@@ -73,4 +73,4 @@ def melhorde3(Iq, asset, initial_entry):
         sleep(3)
         print(f'{candles[6]} {candles[7]}\n')
     
-    sleep(0.5)
+    sleep(0.2)

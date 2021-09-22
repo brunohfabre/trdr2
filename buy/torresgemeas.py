@@ -17,7 +17,7 @@ def torresgemeas(Iq, asset, initial_entry):
   while True:
     minutes = float(((datetime.now()).strftime('%M.%S'))[1:])
 
-    if True if (minutes >= 0.58 and minutes <= 1) or (minutes >= 5.58 and minutes <= 6) else False:
+    if True if (minutes >= 0.29 and minutes <= 1) or (minutes >= 5.59 and minutes <= 6) else False:
       dir = False
       candles = Iq.get_candles(asset, 60, 6, time())
 
@@ -69,4 +69,4 @@ def torresgemeas(Iq, asset, initial_entry):
         sleep(3)
         print(f'{candles[4]} {candles[5]}\n')
     
-    sleep(0.5)
+    sleep(0.2)

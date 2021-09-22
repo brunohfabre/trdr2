@@ -17,7 +17,7 @@ def tresmosqueteiros(Iq, asset, initial_entry):
   while True:
     minutes = float(((datetime.now()).strftime('%M.%S'))[1:])
 
-    if True if (minutes >= 4.58 and minutes <= 5) or minutes >= 9.58 else False:
+    if True if (minutes >= 4.59 and minutes <= 5) or minutes >= 9.59 else False:
       dir = False
       candles = Iq.get_candles(asset, 60, 3, time())
 
@@ -69,4 +69,4 @@ def tresmosqueteiros(Iq, asset, initial_entry):
         sleep(3)
         print(f'{candles[1]} {candles[2]}\n')
     
-    sleep(0.5)
+    sleep(0.2)

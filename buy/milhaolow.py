@@ -17,7 +17,7 @@ def milhaolow(Iq, asset, initial_entry):
   while True:
     minutes = float(((datetime.now()).strftime('%M.%S'))[1:])
 
-    if True if (minutes >= 1.58 and minutes <= 2) or (minutes >= 6.58 and minutes <= 7) else False:
+    if True if (minutes >= 1.59 and minutes <= 2) or (minutes >= 6.59 and minutes <= 7) else False:
       dir = False
       candles = Iq.get_candles(asset, 60, 7, time())
 
@@ -75,4 +75,4 @@ def milhaolow(Iq, asset, initial_entry):
         sleep(3)
         print(f'{candles[5]} {candles[6]}\n')
     
-    sleep(0.5)
+    sleep(0.2)
