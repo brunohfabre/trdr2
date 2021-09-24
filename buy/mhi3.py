@@ -3,9 +3,9 @@ from time import time, sleep
 
 from helpers.martingale import martingale
 
-def mhi3(Iq, asset, initial_entry):
+def mhi3(Iq, asset, initial_entry, entry):
   balance = Iq.get_balance()
-  entry_value_base = round(balance * 0.01)
+  entry_value_base = round(balance * (entry / 100))
   entry_value = entry_value_base
   loss = 0
 

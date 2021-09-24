@@ -1,7 +1,5 @@
-import sys
+import sys, configparser
 from iqoptionapi.stable_api import IQ_Option
-
-from user import user
 
 from get_assets import get_assets
 from get_candles import get_candles
@@ -35,7 +33,10 @@ buys = {
   'tresmosqueteiros': tresmosqueteiros,
 }
 
-Iq = IQ_Option(user['username'], user['password'])
+settings = configparser.RawConfigParser()
+settings.read('settings.txt')
+
+Iq = IQ_Option(settings.get('ACCOUNT', 'user'), settings.get('ACCOUNT', 'password'))
 check, reason = Iq.connect()
 
 if check:
@@ -46,12 +47,23 @@ else:
 
   sys.exit()
 
-Iq.change_balance('PRACTICE')
 
+balance = Iq.get_balance()
 profit = 0
-gain = round(Iq.get_balance() * 0.05)
-period = 2
+stop = int(settings.get('OPERATION', 'stop'))
+gain = round(balance * (stop / 100))
+period = int(settings.get('OPERATION', 'catalog'))
 loss = 0
+entry = int(settings.get('OPERATION', 'entry'))
+account_type = settings.get('ACCOUNT', 'type')
+
+Iq.change_balance(account_type)
+
+print(f'account type: {account_type}')
+print(f'balance: {balance}')
+print(f'stop win: {stop}%, {gain}')
+print(f'catalog period: {period}h')
+print(f'entry value: {entry}%, {round(balance * (entry / 100), 2)}\n')
 
 def stop_win():
   global profit
@@ -67,6 +79,7 @@ def run():
   global gain
   global period
   global loss
+  global entry
 
   print(profit, loss)
   assets = get_assets(Iq, 'digital')
@@ -82,7 +95,7 @@ def run():
 
   buy = buys[strategy['strategy']]
 
-  result, money = buy(Iq, strategy['asset'], loss)
+  result, money = buy(Iq, strategy['asset'], loss, entry)
 
   if result == 'win':
     profit = profit + money

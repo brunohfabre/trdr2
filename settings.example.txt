@@ -1,0 +1,9 @@
+[ACCOUNT]
+user = 
+password = 
+type = PRACTICE
+
+[OPERATION]
+stop = 5
+entry = 1
+catalog = 2
