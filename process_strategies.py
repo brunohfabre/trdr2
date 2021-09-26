@@ -11,30 +11,31 @@ from strategies.melhorde3 import melhorde3
 from strategies.padrao23 import padrao23
 from strategies.tresmosqueteiros import tresmosqueteiros
 
-strategies = [
-  mhi,
-  mhihigh,
-  mhi2,
-  mhi2high,
-  mhi3,
-  mhi3high,
-  milhao,
-  milhaolow,
-  torresgemeas,
-  melhorde3,
-  padrao23,
-  tresmosqueteiros,
-]
+strategies = {
+  'mhi': mhi,
+  'mhihigh': mhihigh,
+  'mhi2': mhi2,
+  'mhi2high': mhi2high,
+  'mhi3': mhi3,
+  'mhi3high': mhi3high,
+  'milhao': milhao,
+  'milhaolow': milhaolow,
+  'torresgemeas': torresgemeas,
+  'melhorde3': melhorde3,
+  'padrao23': padrao23,
+  'tresmosqueteiros': tresmosqueteiros,
+}
 
-def process_strategies(assets, period):
+def process_strategies(assets, period, strategies_to_execute):
   result = []
 
   for asset in assets:
-    for strategy in strategies:
-      response = strategy(asset, period)
+    for strategy in strategies_to_execute[asset['name']]:
+      if(strategies_to_execute[asset['name']][strategy] > 0):
+        response = strategies[strategy](asset, period)
 
-      if response['hit'] < 2:
-        result.append(response)
+        if response['hit'] < 2:
+          result.append(response)
 
   result = sorted(result, key=lambda k: k['mg2'])
 

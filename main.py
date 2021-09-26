@@ -57,7 +57,7 @@ loss = 0
 entry = int(settings.get('OPERATION', 'entry'))
 account_type = settings.get('ACCOUNT', 'type')
 
-executed_strategies = {}
+strategies_to_execute = {}
 
 Iq.change_balance(account_type)
 
@@ -82,37 +82,35 @@ def run():
   global period
   global loss
   global entry
-  global executed_strategies
+  global strategies_to_execute
 
   assets = get_assets(Iq, 'digital')
 
+  for asset in assets:
+    strategies_to_execute[asset] = {
+      'mhi': 2,
+      'mhihigh': 2,
+      'mhi2': 2,
+      'mhi2high': 2,
+      'mhi3': 2,
+      'mhi3high': 2,
+      'milhao': 2,
+      'milhaolow': 2,
+      'torresgemeas': 2,
+      'melhorde3': 2,
+      'padrao23': 2,
+      'tresmosqueteiros': 2,
+    }
+
   candles = get_candles(Iq, assets, period)
 
-  strategies = process_strategies(candles, period)
+  strategies = process_strategies(candles, period, strategies_to_execute)
 
   strategies.reverse()
 
   strategy = strategies[0]
 
   print(strategy)
-
-  print(executed_strategies)
-
-  if strategy['asset'] in executed_strategies:
-    print('existe')
-    if strategy['strategy'] in executed_strategies[strategy['asset']]:
-      if executed_strategies[strategy['asset']][strategy['strategy']] == 2:
-        return
-      
-      else:
-        executed_strategies[strategy['asset']][strategy['strategy']] += 1
-
-  else:
-    print('nao existe')
-
-    executed_strategies[strategy['asset']] = { strategy['strategy']: 1 }
-
-  print(executed_strategies)
 
   buy = buys[strategy['strategy']]
 
@@ -121,9 +119,11 @@ def run():
   if result == 'win':
     profit = profit + money
     loss = 0
+    strategies_to_execute[strategy['asset']][strategy['strategy']] -= 1
 
   else:
     loss = money
+    strategies_to_execute[strategy['asset']][strategy['strategy']] = 0
 
   print(profit, loss)
 
