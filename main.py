@@ -128,6 +128,9 @@ def run():
   print(profit, loss)
 
   stop_win()
+
+  print(strategies_to_execute)
+
   return
 
 while True:
