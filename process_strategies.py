@@ -33,7 +33,7 @@ def process_strategies(assets, period):
     for strategy in strategies:
       response = strategy(asset, period)
 
-      if response['hit'] == 0:
+      if response['hit'] < 2:
         result.append(response)
 
   result = sorted(result, key=lambda k: k['mg2'])

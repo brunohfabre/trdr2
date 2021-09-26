@@ -40,7 +40,7 @@ Iq = IQ_Option(settings.get('ACCOUNT', 'user'), settings.get('ACCOUNT', 'passwor
 check, reason = Iq.connect()
 
 if check:
-  print('Successfully connected')
+  print('Successfully connected\n')
 
 else:
   print('Connection error :/')
@@ -56,6 +56,8 @@ period = int(settings.get('OPERATION', 'catalog'))
 loss = 0
 entry = int(settings.get('OPERATION', 'entry'))
 account_type = settings.get('ACCOUNT', 'type')
+
+executed_strategies = {}
 
 Iq.change_balance(account_type)
 
@@ -80,8 +82,8 @@ def run():
   global period
   global loss
   global entry
+  global executed_strategies
 
-  print(profit, loss)
   assets = get_assets(Iq, 'digital')
 
   candles = get_candles(Iq, assets, period)
@@ -91,7 +93,26 @@ def run():
   strategies.reverse()
 
   strategy = strategies[0]
+
   print(strategy)
+
+  print(executed_strategies)
+
+  if strategy['asset'] in executed_strategies:
+    print('existe')
+    if strategy['strategy'] in executed_strategies[strategy['asset']]:
+      if executed_strategies[strategy['asset']][strategy['strategy']] == 2:
+        return
+      
+      else:
+        executed_strategies[strategy['asset']][strategy['strategy']] += 1
+
+  else:
+    print('nao existe')
+
+    executed_strategies[strategy['asset']] = { strategy['strategy']: 1 }
+
+  print(executed_strategies)
 
   buy = buys[strategy['strategy']]
 
@@ -103,6 +124,8 @@ def run():
 
   else:
     loss = money
+
+  print(profit, loss)
 
   stop_win()
   return
