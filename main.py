@@ -119,11 +119,11 @@ def run():
   if result == 'win':
     profit = profit + money
     loss = 0
-    strategies_to_execute[strategy['asset']][strategy['strategy']] -= 1
 
   else:
     loss = money
-    strategies_to_execute[strategy['asset']][strategy['strategy']] = 0
+
+  strategies_to_execute[strategy['asset']][strategy['strategy']] = 0
 
   print(profit, loss)
 
