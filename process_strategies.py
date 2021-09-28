@@ -37,6 +37,6 @@ def process_strategies(assets, period, strategies_to_execute):
         if response['hit'] == 0:
           result.append(response)
 
-  result = sorted(result, key=lambda k: k['mg2'])
+  result = sorted(result, key=lambda k: k['win'])
 
   return result

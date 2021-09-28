@@ -110,8 +110,6 @@ def run():
 
   strategy = strategies[0]
 
-  print(strategy)
-
   buy = buys[strategy['strategy']]
 
   result, money = buy(Iq, strategy['asset'], loss, entry)
